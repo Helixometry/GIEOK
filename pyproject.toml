@@ -1,0 +1,9 @@
+[project]
+name = "gieok"
+version = "1.0.0"
+description = "GIEOK: cue-reliable paralinguistic audio-language modeling for zero-shot cross-lingual Alzheimer's detection"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

@@ -1,0 +1,14 @@
+# Core (everything in this repository runs with these)
+torch>=2.1
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+scikit-learn>=1.3
+pyyaml>=6.0
+pytest>=7.4
+
+# Feature extraction and the frozen decoder
+librosa>=0.10          # audio loading, cue features
+transformers>=4.40     # Qwen2.5 decoder and text pathway, Whisper encoder
+tensorflow>=2.13       # TRILLsson (TF-Hub); optional, only for feature extraction
+tensorflow-hub>=0.14   # TRILLsson
