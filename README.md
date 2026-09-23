@@ -1,8 +1,3 @@
-# LUMEN
-
-**L**anguage **U**nderstanding and **M**ultimodal **E**vidence **N**etworks — research code accompanying my publications.
-
----
 
 ## GIEOK: A Paralinguistic Audio–Language Modeling for Zero-Shot Cross-Lingual Alzheimer's Detection
 
