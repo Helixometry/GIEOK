@@ -1,18 +1,37 @@
+# GIEOK: Paralinguistic Audio-Language Modeling for Zero-Shot Cross-Lingual Alzheimer's Detection
 
-## GIEOK: A Paralinguistic Audio–Language Modeling for Zero-Shot Cross-Lingual Alzheimer's Detection
+<div align="center">
 
-**Girish, Mohd Mujtaba Akhtar, Muskaan Singh, Juliana Gerard, Paula McClean, Kongfatt Wong-Lin**
-*IEEE Signal Processing Letters, 2026 (accepted)*
-Ulster University, UK · Corresponding author: Muskaan Singh (m.singh@ulster.ac.uk)
+[![Paper](https://img.shields.io/badge/Paper-IEEE%202026-blue)](https://ieeexplore.ieee.org/document/11723020)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c)](https://pytorch.org/)
 
-[![tests](https://github.com/mohdmujtabaakhtar/LUMEN/actions/workflows/tests.yml/badge.svg)](https://github.com/mohdmujtabaakhtar/LUMEN/actions/workflows/tests.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.x-ee4c2c)
+Zero-shot cross-lingual Alzheimer's disease detection using speech and clinical cues
 
-Speech is an early and inexpensive window on Alzheimer's disease (AD), but a detector trained on English usually falls apart on other languages. **GIEOK** detects AD in Chinese, Spanish and Greek **without any target-language adaptation**: it is trained on English speech only.
+</div>
 
-The idea is that clinical *cues* — pause behaviour, fluency, ASR confidence, prosody — carry real diagnostic evidence, but not equally in every recording. A pause pattern can reflect a language's speaking style rather than cognition, and low ASR confidence can mean an accent rather than impairment. GIEOK therefore never trusts cues blindly: **Speech–Cue Agreement Fusion (SCAF)** weights each cue by how reliable the cue stream looks for that utterance and by how well the individual cue agrees with the speech representation, keeping the fused representation speech-dominant.
+**Authors**: Girish, Mohd Mujtaba Akhtar, Muskaan Singh, Juliana Gerard, Paula McClean, Kongfatt Wong-Lin  
+**Published**: IEEE Signal Processing Letters, 2026 (accepted)  
+**Affiliation**: Ulster University, UK  
+**Corresponding author**: Muskaan Singh (m.singh@ulster.ac.uk)
+
+## Overview
+
+Speech is an early and inexpensive window on Alzheimer's disease (AD), but a detector trained on English usually fails on other languages. **GIEOK** detects AD in **Chinese, Spanish, and Greek without any target-language adaptation** — trained on English speech only.
+
+### Key Insight
+
+Clinical cues — pause behavior, fluency, ASR confidence, prosody — carry diagnostic evidence, but not equally in every recording. A pause pattern can reflect a language's speaking style rather than cognition, and low ASR confidence can mean an accent rather than impairment.
+
+**Speech-Cue Agreement Fusion (SCAF)** solves this by weighting each cue by:
+1. How reliable the cue stream looks for that utterance
+2. How well the individual cue agrees with the speech representation
+3. Keeping the fused representation speech-dominant
+
+### Results
+
+Achieves **80.85% macro-F1** on zero-shot languages (Chinese, Spanish, Greek) when trained on English only.
 
 <p align="center"><img src="assets/gieok_architecture.png" width="95%" alt="GIEOK architecture"></p>
 
@@ -34,20 +53,39 @@ The idea is that clinical *cues* — pause behaviour, fluency, ASR confidence, p
    ```
    `L_rel` keeps the reliability scores from collapsing, `L_agree` pulls matched speech and cue summaries together.
 
-## Quick start
+## Quick Start
+
+### Installation
 
 ```bash
-git clone https://github.com/mohdmujtabaakhtar/LUMEN.git
-cd LUMEN
+git clone https://github.com/Helixometry/GIEOK.git
+cd GIEOK
 pip install -r requirements.txt
+```
 
+### Run Tests
+
+```bash
 pytest                                          # unit tests, ~10 s on CPU
+```
 
-python -m gieok.train --synthetic               # full model (SCAF) on generated data, ~1 min on CPU
-python -m gieok.train --synthetic --fusion crossattn   # cue prompt with cross-attention
-python -m gieok.train --synthetic --fusion concat      # cue prompt with concatenation
-python -m gieok.train --synthetic --fusion none        # no cue prompt (speech-only ALM)
-python -m gieok.train --synthetic --model probe        # end-to-end speech baseline (no decoder)
+### Training
+
+```bash
+# Full model (SCAF) on generated data (~1 min on CPU)
+python -m gieok.train --synthetic
+
+# Cue prompt with cross-attention
+python -m gieok.train --synthetic --fusion crossattn
+
+# Cue prompt with concatenation
+python -m gieok.train --synthetic --fusion concat
+
+# No cue prompt (speech-only ALM)
+python -m gieok.train --synthetic --fusion none
+
+# End-to-end speech baseline (no decoder)
+python -m gieok.train --synthetic --model probe
 python -m gieok.train --synthetic --set model.use_reliability=false    # SCAF ablations
 python -m gieok.compare results/gieok-scaf.json results/gieok-concat.json   # McNemar's test
 ```
