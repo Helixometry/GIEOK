@@ -1,0 +1,51 @@
+# GIEOK Configuration
+
+# Model Architecture
+model:
+  speech_dim: 1024              # TRILLsson output dimension
+  cue_dim: 768                  # Cue embedding dimension
+  decoder_dim: 4096             # Qwen2.5-7B embedding dimension
+  n_speech_tokens: 16           # K in paper
+  n_cue_tokens: 8               # M in paper
+  use_scaf: true                # Enable SCAF
+  use_reliability: true         # Include reliability scoring
+  use_agreement: true           # Include token agreement
+  use_gate: true                # Use gated fusion
+
+# Training
+training:
+  batch_size: 8                 # Paper uses 8
+  epochs: 50                    # Paper uses 50
+  learning_rate: 1e-4           # AdamW lr
+  weight_decay: 1e-2            # L2 regularization
+  gradient_clip: 1.0            # Gradient clipping
+
+  # Loss weights
+  lambda_rel: 1.0               # Reliability loss weight
+  lambda_agree: 1.0             # Agreement loss weight
+
+# Data
+data:
+  sample_rate: 16000
+  feature_type: "trillsson"     # or "whisper"
+  speaker_independent_split: true
+  train_ratio: 0.8
+
+# Evaluation
+evaluation:
+  languages:
+    - "en"
+    - "zh"
+    - "es"
+    - "el"
+
+# Device
+device: cuda
+seed: 42
+num_workers: 4
+
+# Logging
+logging:
+  tensorboard: true
+  log_interval: 10
+  eval_interval: 1
